@@ -1,17 +1,36 @@
 package qrcode.data.entity;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "public.customer")
 public class Customer {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="cust_id", nullable=false, length=15)
 	long id;
 	String fName;
 	String lName;
 	
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinTable(name="customer_qrcodes", joinColumns= {@JoinColumn(name= "cust_id")}, inverseJoinColumns={@JoinColumn(name = "qr_id")})
+	List<QRCode> qrl = new LinkedList<QRCode>();
+	
+			
 	public Customer() {
-		id = -1;
 		fName = "default";
 		lName = "default";
 	}
@@ -38,5 +57,9 @@ public class Customer {
 
 	public void setlName(String lName) {
 		this.lName = lName;
+	}
+	
+	public String toString() {
+		return "Customer: " + " id " + this.id + " fName " + this.fName + " lName " + this.lName;
 	}
 } // end Customer class

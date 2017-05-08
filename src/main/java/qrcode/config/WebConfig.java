@@ -52,6 +52,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	sfb.setDataSource(dataSource);
 	sfb.setPackagesToScan(new String[] { "qrcode.data" });
 	Properties props = new Properties();
+	props.setProperty("hibernate.hbm2ddl.auto", "create");
+	props.setProperty("hibernate.show_sql", "true");
 	props.setProperty("dialect", "org.hibernate.dialect.postgresql");	
 	sfb.setHibernateProperties(props);
 	return sfb;
